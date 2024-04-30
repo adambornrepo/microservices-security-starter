@@ -1,0 +1,10 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+security:
+  token:
+    prefix: Bearer
+    secret: Bukismauzunbirmetingirilmesigerekebilirnormaldeboyleolmazamasimdilikidareetsindiyeboyleyaziyorum
+    validity: 259200000 # 3 days

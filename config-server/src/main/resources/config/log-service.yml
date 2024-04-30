@@ -1,0 +1,11 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: mss-log

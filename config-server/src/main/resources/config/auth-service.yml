@@ -1,0 +1,17 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: mss-auth
+
+security:
+  token:
+    prefix: Bearer
+    secret: Bukismauzunbirmetingirilmesigerekebilirnormaldeboyleolmazamasimdilikidareetsindiyeboyleyaziyorum
+    validity: 259200000 # 3 days
