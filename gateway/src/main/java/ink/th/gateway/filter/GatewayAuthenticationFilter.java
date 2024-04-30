@@ -1,6 +1,7 @@
 package ink.th.gateway.filter;
 
 import ink.th.gateway.token.TokenService;
+import ink.th.gateway.utils.RotateResolver;
 import ink.th.gateway.utils.TokenProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -20,16 +21,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GatewayAuthenticationFilter implements GatewayFilter {
 
-    private final TokenService tokenService;
     private final TokenProperties tokenProperties;
+    private final RotateResolver rotate;
+    private final TokenService tokenService;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
 
-        boolean isSecured = WHITE_LIST.stream().noneMatch(url -> request.getURI().getPath().contains(url));
-
-        if (isSecured) {
+        if (rotate.isSecured.test(request)) {
             String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
             if (authHeader == null || !authHeader.startsWith(tokenProperties.getPrefix()) || !tokenService.isTokenValid(authHeader.substring(7))) {
                 var response = exchange.getResponse();
@@ -44,9 +44,4 @@ public class GatewayAuthenticationFilter implements GatewayFilter {
         return chain.filter(exchange);
     }
 
-    private static final List<String> WHITE_LIST = List.of(
-            "/v1/auth/login",
-            "/v1/auth/signup",
-            "/eureka/**"
-    );
 }
